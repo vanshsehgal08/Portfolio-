@@ -1,4 +1,4 @@
-# Hi there, I'm [Your Name] 👋
+# Hi there, I'm Vansh Sehgal 👋
 
 I'm a Computer Science student passionate about software development and problem-solving.  
 With a strong foundation in Java, Data Structures & Algorithms (DSA), and Object-Oriented Programming (OOP),  
