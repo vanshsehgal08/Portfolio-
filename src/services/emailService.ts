@@ -7,27 +7,24 @@ interface EmailParams {
   message: string;
 }
 
-interface EmailConfig {
-  serviceId: string;
-  templateId: string;
-  publicKey: string;
-}
-
-const EMAIL_CONFIG: EmailConfig = {
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
-  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || ''
-};
-
 /**
  * Validates if EmailJS configuration is properly set
  */
 export const isEmailConfigValid = (): boolean => {
-  return Boolean(
-    EMAIL_CONFIG.serviceId && 
-    EMAIL_CONFIG.templateId && 
-    EMAIL_CONFIG.publicKey
-  );
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  if (!serviceId || !templateId || !publicKey) {
+    console.error('Missing EmailJS configuration:', {
+      hasServiceId: !!serviceId,
+      hasTemplateId: !!templateId,
+      hasPublicKey: !!publicKey
+    });
+    return false;
+  }
+
+  return true;
 };
 
 /**
@@ -47,13 +44,13 @@ export const sendEmail = async (params: EmailParams): Promise<void> => {
 
   try {
     await emailjs.send(
-      EMAIL_CONFIG.serviceId,
-      EMAIL_CONFIG.templateId,
+      import.meta.env.VITE_EMAILJS_SERVICE_ID!,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID!,
       templateParams,
-      EMAIL_CONFIG.publicKey
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
     );
   } catch (error) {
     console.error('Error sending email:', error);
-    throw error;
+    throw new Error('Failed to send email. Please try again later.');
   }
 };

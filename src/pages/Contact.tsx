@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import ContactSection from '../components/sections/ContactSection';
+import ContactForm from '../components/contact/ContactForm';
+import ContactInfo from '../components/contact/ContactInfo';
 
 const Contact: React.FC = () => {
   return (
@@ -24,7 +25,12 @@ const Contact: React.FC = () => {
       </div>
 
       <section className="section-padding">
-        <ContactSection />
+        <div className="container mx-auto px-4 py-16 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <ContactInfo />
+            <ContactForm />
+          </div>
+        </div>
       </section>
     </motion.div>
   );

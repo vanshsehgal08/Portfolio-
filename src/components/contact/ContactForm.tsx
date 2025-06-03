@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Send, Loader2, AlertCircle } from "lucide-react";
 import { sendEmail, isEmailConfigValid } from "../../services/emailService";
+import emailjs from '@emailjs/browser';
 
 interface FormData {
     name: string;
@@ -17,10 +18,15 @@ interface ContactFormProps {
 
 const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">(
-        "idle"
-    );
+    const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
+
+    useEffect(() => {
+        // Initialize EmailJS with your public key
+        if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
+            emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+        }
+    }, []);
 
     const {
         register,
@@ -38,7 +44,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
             // Check if EmailJS configuration is valid
             if (!isEmailConfigValid()) {
                 throw new Error(
-                    "Email service not configured. Please set up the required environment variables."
+                    "Email service not configured. Please check the environment variables."
                 );
             }
 
