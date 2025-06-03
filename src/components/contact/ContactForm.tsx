@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Send, Loader2, AlertCircle } from "lucide-react";
-import { sendEmail, isEmailConfigValid } from "../../services/emailService";
 import emailjs from '@emailjs/browser';
 
 interface FormData {
@@ -23,8 +22,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
     useEffect(() => {
         // Initialize EmailJS with your public key
-        if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
-            emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+        if (publicKey) {
+            emailjs.init(publicKey);
         }
     }, []);
 
@@ -41,26 +41,31 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         setErrorMessage("");
 
         try {
-            // Check if EmailJS configuration is valid
-            if (!isEmailConfigValid()) {
-                throw new Error(
-                    "Email service not configured. Please check the environment variables."
-                );
+            const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+            const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+
+            if (!serviceId || !templateId) {
+                throw new Error("Email service configuration is missing");
             }
 
-            // Send the email
-            await sendEmail(data);
+            await emailjs.send(
+                serviceId,
+                templateId,
+                {
+                    from_name: data.name,
+                    from_email: data.email,
+                    subject: data.subject,
+                    message: data.message,
+                }
+            );
 
-            // Set success state
             setFormStatus("success");
             reset();
 
-            // Call success callback if provided
             if (onSuccess) {
                 onSuccess();
             }
 
-            // Reset success message after 5 seconds
             setTimeout(() => {
                 setFormStatus("idle");
             }, 5000);
@@ -70,7 +75,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
             setErrorMessage(
                 error instanceof Error
                     ? error.message
-                    : "An unexpected error occurred. Please try again later."
+                    : "Failed to send email. Please try again later."
             );
         } finally {
             setIsSubmitting(false);
