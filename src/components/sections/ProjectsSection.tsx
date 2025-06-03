@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Github, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import SectionHeading from '../ui/SectionHeading';
 import { projects } from '../../data/projects';
 
 const ProjectsSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const projectsPerPage = 3;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
 
@@ -30,100 +31,128 @@ const ProjectsSection: React.FC = () => {
       />
       
       <div className="relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              className="bg-white dark:bg-dark-700 rounded-xl overflow-hidden shadow-lg group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-4">
-                  <div className="space-x-2">
-                    <a 
-                      href={project.githubLink} 
-                      target="_blank"
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-dark-800/80 text-white hover:bg-primary-600 transition-colors"
-                      aria-label={`View ${project.title} on GitHub`}
-                    >
-                      <Github size={18} />
-                    </a>
-                    {project.demoLink && (
-                      <a 
-                        href={project.demoLink} 
-                        target="_blank"
-                        rel="noopener noreferrer" 
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-dark-800/80 text-white hover:bg-primary-600 transition-colors"
-                        aria-label={`View ${project.title} demo`}
+        <AnimatePresence mode="wait">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {currentProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                className="group relative bg-white dark:bg-dark-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onHoverStart={() => setHoveredProject(project.id)}
+                onHoverEnd={() => setHoveredProject(null)}
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <motion.img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover"
+                    animate={{
+                      scale: hoveredProject === project.id ? 1.1 : 1
+                    }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/50 to-transparent"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                      <div className="space-x-2">
+                        <motion.a 
+                          href={project.githubLink} 
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <Github size={18} />
+                        </motion.a>
+                        {project.demoLink && (
+                          <motion.a 
+                            href={project.demoLink} 
+                            target="_blank"
+                            rel="noopener noreferrer" 
+                            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            <ExternalLink size={18} />
+                          </motion.a>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+                
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-dark-800 dark:text-white mb-3 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                    {project.title}
+                  </h3>
+                  <p className="text-dark-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    {project.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {project.tags.map((tag, i) => (
+                      <motion.span 
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="px-3 py-1 text-sm font-medium rounded-full bg-gradient-to-r from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 text-primary-700 dark:text-primary-300"
                       >
-                        <ExternalLink size={18} />
-                      </a>
-                    )}
+                        {tag}
+                      </motion.span>
+                    ))}
                   </div>
                 </div>
-              </div>
-              
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-dark-800 dark:text-white mb-2">
-                  {project.title}
-                </h3>
-                <p className="text-dark-600 dark:text-gray-300 mb-4">
-                  {project.description}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {project.tags.map((tag, i) => (
-                    <span 
-                      key={i} 
-                      className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 dark:bg-dark-600 text-dark-600 dark:text-gray-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
         {totalPages > 1 && (
-          <div className="flex justify-center mt-8 space-x-4">
-            <button
+          <div className="flex justify-center mt-12 space-x-4">
+            <motion.button
               onClick={prevSlide}
-              className="p-2 rounded-full bg-white dark:bg-dark-700 shadow-lg text-dark-600 dark:text-gray-300 hover:bg-primary-600 hover:text-white transition-colors"
-              aria-label="Previous projects"
+              className="p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               <ChevronLeft size={24} />
-            </button>
+            </motion.button>
             <div className="flex items-center space-x-2">
               {[...Array(totalPages)].map((_, i) => (
-                <button
+                <motion.button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     currentIndex === i
-                      ? 'bg-primary-600'
+                      ? 'bg-gradient-to-r from-primary-600 to-secondary-600 scale-125'
                       : 'bg-gray-300 dark:bg-dark-600 hover:bg-primary-400'
                   }`}
-                  aria-label={`Go to page ${i + 1}`}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
                 />
               ))}
             </div>
-            <button
+            <motion.button
               onClick={nextSlide}
-              className="p-2 rounded-full bg-white dark:bg-dark-700 shadow-lg text-dark-600 dark:text-gray-300 hover:bg-primary-600 hover:text-white transition-colors"
-              aria-label="Next projects"
+              className="p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               <ChevronRight size={24} />
-            </button>
+            </motion.button>
           </div>
         )}
       </div>

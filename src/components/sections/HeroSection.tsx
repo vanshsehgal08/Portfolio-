@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Download, ArrowRight } from 'lucide-react';
+import { Download, ArrowRight, Code, Terminal, Brain } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const [textRef, inView] = useInView({
@@ -11,13 +11,12 @@ const HeroSection: React.FC = () => {
 
   const typingRef = useRef<HTMLSpanElement>(null);
   const roles = [
-  'Full Stack Developer',
-  'Competitive Programmer',
-  'AI Enthusiast',
-  'Problem Solver'
-];
+    'Full Stack Developer',
+    'Competitive Programmer',
+    'AI Enthusiast',
+    'Problem Solver'
+  ];
 
-  
   useEffect(() => {
     if (!typingRef.current) return;
     
@@ -59,39 +58,45 @@ const HeroSection: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, []);
 
+  const floatingIcons = [
+    { Icon: Code, delay: 0, x: -20, y: -20 },
+    { Icon: Terminal, delay: 0.2, x: 20, y: 20 },
+    { Icon: Brain, delay: 0.4, x: -15, y: 15 }
+  ];
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-dark-900 dark:via-dark-800 dark:to-secondary-900 z-0" />
-      
-      <div className="absolute inset-0 z-10 overflow-hidden">
-        <motion.div
-          className="absolute -top-20 -left-20 w-96 h-96 bg-primary-400/10 dark:bg-primary-600/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, 30, 0],
-            y: [0, 20, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute -bottom-32 -right-32 w-96 h-96 bg-secondary-400/10 dark:bg-secondary-600/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, -30, 0],
-            y: [0, -20, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50/50 via-white to-secondary-50/50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-700">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {floatingIcons.map(({ Icon, delay, x, y }, index) => (
+          <motion.div
+            key={index}
+            className="absolute"
+            style={{
+              top: `${30 + index * 20}%`,
+              left: `${20 + index * 25}%`,
+            }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ 
+              opacity: 0.2,
+              scale: 1,
+              x: [0, x, 0],
+              y: [0, y, 0],
+            }}
+            transition={{
+              duration: 3,
+              delay,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          >
+            <Icon size={40} className="text-primary-400 dark:text-primary-600" />
+          </motion.div>
+        ))}
       </div>
 
       <div className="container-custom relative z-20 mt-16">
-        <div className="flex flex-col md:flex-row items-center gap-8">
+        <div className="flex flex-col md:flex-row items-center gap-12">
           <motion.div 
             ref={textRef}
             className="flex-1 text-center md:text-left"
@@ -99,36 +104,73 @@ const HeroSection: React.FC = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 dark:text-white mb-4">
-              Hi, I'm <span className="text-primary-600 dark:text-primary-400">Vansh</span>
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-medium text-dark-700 dark:text-gray-200 mb-4">
-              I'm a <span ref={typingRef} className="text-secondary-600 dark:text-secondary-400">Full Stack Developer</span>
+            <motion.h1 
+              className="text-5xl md:text-6xl lg:text-7xl font-bold text-dark-900 dark:text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Hi, I'm{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600">
+                Vansh
+              </span>
+            </motion.h1>
+            
+            <h2 className="text-2xl md:text-3xl font-medium text-dark-700 dark:text-gray-200 mb-6">
+              I'm a{' '}
+              <span 
+                ref={typingRef} 
+                className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-primary-600"
+              >
+                Full Stack Developer
+              </span>
               <span className="animate-blink">|</span>
             </h2>
-            <p className="text-lg text-dark-600 dark:text-gray-300 mb-8 max-w-xl mx-auto md:mx-0">
-              Computer Science student passionate about building full-stack web applications and solving complex problems.  
-              Experienced with React, Node.js, and AI-powered projects using Raspberry Pi and Google Gemini.  
-              Always eager to learn cutting-edge tech and contribute to impactful innovations.
-            </p>
 
-            <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+            <motion.p 
+              className="text-lg text-dark-600 dark:text-gray-300 mb-8 max-w-xl mx-auto md:mx-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              Computer Science student passionate about building full-stack web applications 
+              and solving complex problems. Experienced with React, Node.js, and AI-powered projects 
+              using Raspberry Pi and Google Gemini.
+            </motion.p>
+
+            <motion.div 
+              className="flex flex-col sm:flex-row justify-center md:justify-start gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
               <a 
-                href="https://drive.google.com/file/d/1Eft7QjUwARt1Tjpq9TgcBznZ6cMAfKAb/view?usp=sharing" 
+                href="/resume.pdf" 
                 download
-                className="btn-primary"
+                className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition duration-300 ease-out border-2 border-primary-600 rounded-full shadow-md text-xl"
               >
-                <Download size={18} className="mr-2" />
-                Download Resume
+                <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-primary-600 group-hover:translate-x-0 ease">
+                  <Download size={20} />
+                </span>
+                <span className="absolute flex items-center justify-center w-full h-full text-primary-600 transition-all duration-300 transform group-hover:translate-x-full ease">
+                  Resume
+                </span>
+                <span className="relative invisible">Resume</span>
               </a>
+              
               <a 
                 href="#contact" 
-                className="btn-outline"
+                className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition duration-300 ease-out border-2 border-secondary-600 rounded-full shadow-md text-xl"
               >
-                Contact Me
-                <ArrowRight size={18} className="ml-2" />
+                <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-secondary-600 group-hover:translate-x-0 ease">
+                  <ArrowRight size={20} />
+                </span>
+                <span className="absolute flex items-center justify-center w-full h-full text-secondary-600 transition-all duration-300 transform group-hover:translate-x-full ease">
+                  Contact
+                </span>
+                <span className="relative invisible">Contact</span>
               </a>
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.div 
@@ -138,8 +180,19 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-3xl transform -translate-x-4 translate-y-4"></div>
-              <div className="relative w-64 h-64 sm:w-80 sm:h-80 overflow-hidden rounded-full">
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full blur-3xl opacity-20"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.2, 0.3, 0.2]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+              />
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 overflow-hidden rounded-full border-4 border-white dark:border-dark-700 shadow-xl">
                 <img 
                   src="/profile.png" 
                   alt="Profile" 

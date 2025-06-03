@@ -22,14 +22,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
     useEffect(() => {
         // Initialize EmailJS with your public key
-<<<<<<< HEAD
-        emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
-=======
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
         if (publicKey) {
             emailjs.init(publicKey);
         }
->>>>>>> 3098f59 (edited emailjs)
     }, []);
 
     const {
@@ -52,11 +48,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
                 throw new Error("Email service configuration is missing");
             }
 
-<<<<<<< HEAD
-            const response = await emailjs.send(
-=======
             await emailjs.send(
->>>>>>> 3098f59 (edited emailjs)
                 serviceId,
                 templateId,
                 {
@@ -67,10 +59,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
                 }
             );
 
-<<<<<<< HEAD
-            console.log('Email sent successfully:', response);
-=======
->>>>>>> 3098f59 (edited emailjs)
             setFormStatus("success");
             reset();
 
