@@ -33,22 +33,28 @@ const ProjectsSection: React.FC = () => {
       <div className="relative">
         <AnimatePresence mode="wait">
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[600px] relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             {currentProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                className="group relative bg-white dark:bg-dark-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group relative bg-white dark:bg-dark-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 h-full"
+                initial={{ opacity: 0, x: index === 0 ? -50 : index === 2 ? 50 : 0 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: index === 0 ? 50 : index === 2 ? -50 : 0 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  ease: "easeInOut"
+                }}
                 onHoverStart={() => setHoveredProject(project.id)}
                 onHoverEnd={() => setHoveredProject(null)}
               >
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
                   <motion.img 
                     src={project.image} 
                     alt={project.title} 
@@ -65,43 +71,41 @@ const ProjectsSection: React.FC = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                      <div className="space-x-2">
+                      <motion.a 
+                        href={project.githubLink} 
+                        target="_blank"
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <Github size={18} />
+                      </motion.a>
+                      {project.demoLink && (
                         <motion.a 
-                          href={project.githubLink} 
+                          href={project.demoLink} 
                           target="_blank"
                           rel="noopener noreferrer" 
                           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
-                          <Github size={18} />
+                          <ExternalLink size={18} />
                         </motion.a>
-                        {project.demoLink && (
-                          <motion.a 
-                            href={project.demoLink} 
-                            target="_blank"
-                            rel="noopener noreferrer" 
-                            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                          >
-                            <ExternalLink size={18} />
-                          </motion.a>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </motion.div>
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold text-dark-800 dark:text-white mb-3 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                  <h3 className="text-2xl font-bold text-dark-800 dark:text-white mb-2 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
                     {project.title}
                   </h3>
-                  <p className="text-dark-600 dark:text-gray-300 mb-4 line-clamp-3">
+                  <p className="text-dark-600 dark:text-gray-300 mb-3 line-clamp-3">
                     {project.description}
                   </p>
                   
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     {project.tags.map((tag, i) => (
                       <motion.span 
                         key={i}
@@ -120,41 +124,48 @@ const ProjectsSection: React.FC = () => {
           </motion.div>
         </AnimatePresence>
 
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-12 space-x-4">
+        {/* Side Navigation Arrows */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12">
+          <motion.button
+            onClick={prevSlide}
+            className="p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300 z-10"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          >
+            <ChevronLeft size={24} />
+          </motion.button>
+        </div>
+
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6">
+          <motion.button
+            onClick={nextSlide}
+            className="p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300 z-10"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          >
+            <ChevronRight size={24} />
+          </motion.button>
+        </div>
+
+        {/* Page Indicators */}
+        <div className="flex justify-center mt-8 space-x-2">
+          {[...Array(totalPages)].map((_, i) => (
             <motion.button
-              onClick={prevSlide}
-              className="p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300"
-              whileHover={{ scale: 1.1 }}
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                currentIndex === i
+                  ? 'bg-gradient-to-r from-primary-600 to-secondary-600 scale-125'
+                  : 'bg-gray-300 dark:bg-dark-600 hover:bg-primary-400'
+              }`}
+              whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
-            >
-              <ChevronLeft size={24} />
-            </motion.button>
-            <div className="flex items-center space-x-2">
-              {[...Array(totalPages)].map((_, i) => (
-                <motion.button
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentIndex === i
-                      ? 'bg-gradient-to-r from-primary-600 to-secondary-600 scale-125'
-                      : 'bg-gray-300 dark:bg-dark-600 hover:bg-primary-400'
-                  }`}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                />
-              ))}
-            </div>
-            <motion.button
-              onClick={nextSlide}
-              className="p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <ChevronRight size={24} />
-            </motion.button>
-          </div>
-        )}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
