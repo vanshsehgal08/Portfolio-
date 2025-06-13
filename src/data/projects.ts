@@ -14,7 +14,7 @@ export const projects: Project[] = [
     id: 1,
     title: "CogniVue",
     description: "Real-time, voice-based AI mock interviews using ElevenLabs for dynamic conversation flow. Features interactive salary negotiation simulations with instant AI feedback.",
-    image: "https://images.pexels.com/photos/7688460/pexels-photo-7688460.jpeg",
+    image: "/Cognivue.png",
     tags: ["React", "Node.js", "Express", "MongoDB", "Claude API"],
     githubLink: "",
     demoLink: "https://www.cognivue.software",
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     id: 2,
     title: "LT-Companion",
     description: "Chrome extension enhancing LeetCode experience with AI-powered features like dynamic hints, code analysis, test case generation, and a modern floating UI.",
-    image: "https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg",
+    image: "/LT-Companion.jpg",
     tags: ["Chrome Extension", "Google Gemini", "JavaScript", "AI Integration"],
     githubLink: "https://github.com/vanshsehgal08/LT-Companion",
     featured: true
