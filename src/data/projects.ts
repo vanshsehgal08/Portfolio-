@@ -17,7 +17,7 @@ export const projects: Project[] = [
     image: "https://images.pexels.com/photos/7688460/pexels-photo-7688460.jpeg",
     tags: ["React", "Node.js", "Express", "MongoDB", "Claude API"],
     githubLink: "",
-    demoLink: "https://www.cognivue.com",
+    demoLink: "https://www.cognivue.software",
     featured: true
   },
   {
