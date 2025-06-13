@@ -1,4 +1,3 @@
-
 export interface Project {
   id: number;
   title: string;
@@ -17,7 +16,8 @@ export const projects: Project[] = [
     description: "Real-time, voice-based AI mock interviews using ElevenLabs for dynamic conversation flow. Features interactive salary negotiation simulations with instant AI feedback.",
     image: "https://images.pexels.com/photos/7688460/pexels-photo-7688460.jpeg",
     tags: ["React", "Node.js", "Express", "MongoDB", "Claude API"],
-    githubLink: "https://github.com/vanshsehgal08/CogniVue",
+    githubLink: "",
+    demoLink: "https://www.cognivue.com",
     featured: true
   },
   {

@@ -71,16 +71,18 @@ const ProjectsSection: React.FC = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                      <motion.a 
-                        href={project.githubLink} 
-                        target="_blank"
-                        rel="noopener noreferrer" 
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Github size={18} />
-                      </motion.a>
+                      {project.githubLink && (
+                        <motion.a 
+                          href={project.githubLink} 
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <Github size={18} />
+                        </motion.a>
+                      )}
                       {project.demoLink && (
                         <motion.a 
                           href={project.demoLink} 
