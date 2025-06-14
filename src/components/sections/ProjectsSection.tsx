@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import SectionHeading from '../ui/SectionHeading';
 import { projects } from '../../data/projects';
 
@@ -9,6 +10,7 @@ const ProjectsSection: React.FC = () => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const projectsPerPage = 3;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
+  const navigate = useNavigate();
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % totalPages);
@@ -22,6 +24,10 @@ const ProjectsSection: React.FC = () => {
     currentIndex * projectsPerPage,
     (currentIndex + 1) * projectsPerPage
   );
+
+  const handleProjectClick = (projectId: number) => {
+    navigate(`/projects/${projectId}`);
+  };
 
   return (
     <div className="container-custom py-20">
@@ -42,7 +48,7 @@ const ProjectsSection: React.FC = () => {
             {currentProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                className="group relative bg-white dark:bg-dark-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 h-full"
+                className="group relative bg-white dark:bg-dark-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 h-full cursor-pointer"
                 initial={{ opacity: 0, x: index === 0 ? -50 : index === 2 ? 50 : 0 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: index === 0 ? 50 : index === 2 ? -50 : 0 }}
@@ -53,6 +59,7 @@ const ProjectsSection: React.FC = () => {
                 }}
                 onHoverStart={() => setHoveredProject(project.id)}
                 onHoverEnd={() => setHoveredProject(null)}
+                onClick={() => handleProjectClick(project.id)}
               >
                 <div className="relative h-48 overflow-hidden">
                   <motion.img 
@@ -79,6 +86,7 @@ const ProjectsSection: React.FC = () => {
                           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Github size={18} />
                         </motion.a>
@@ -91,6 +99,7 @@ const ProjectsSection: React.FC = () => {
                           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <ExternalLink size={18} />
                         </motion.a>
