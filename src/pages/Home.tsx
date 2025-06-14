@@ -44,15 +44,6 @@ const Home: React.FC = () => {
 
       <section id="projects" className="section-padding">
         <ProjectsSection />
-        <div className="mt-12 text-center">
-          <Link 
-            to="/projects"
-            className="inline-flex items-center btn-primary"
-          >
-            <span>View All Projects</span>
-            <ArrowRight size={18} className="ml-2" />
-          </Link>
-        </div>
       </section>
 
       <section id="experience" className="section-padding bg-gray-50 dark:bg-dark-900">

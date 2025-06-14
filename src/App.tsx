@@ -10,6 +10,7 @@ import ProjectDetail from './pages/ProjectDetail';
 import Experience from './pages/Experience';
 import Contact from './pages/Contact';
 import { BackToTop } from './components/ui/BackToTop';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const location = useLocation();
@@ -17,6 +18,7 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <ScrollToTop />
       <main className="flex-grow">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
