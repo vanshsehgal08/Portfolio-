@@ -24,7 +24,6 @@ const ContactSection: React.FC = () => {
           <ContactInfo />
         </motion.div>
         
-        {/* Contact Form */}
         <motion.div 
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}

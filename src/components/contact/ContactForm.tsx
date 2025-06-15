@@ -1,94 +1,86 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { motion } from "framer-motion";
-import { Send, Loader2, AlertCircle } from "lucide-react";
-import emailjs from "@emailjs/browser";
+import React, { useRef, useState, useEffect } from 'react';
+import { Send, Loader2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
-interface FormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
-interface ContactFormProps {
-  onSuccess?: () => void;
-}
-
-const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
+const ContactForm: React.FC = () => {
+  const form = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">(
-    "idle"
-  );
-  const [errorMessage, setErrorMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Test environment variables on component mount
   useEffect(() => {
-    // Initialize EmailJS with your public key
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    if (publicKey) {
-      emailjs.init(publicKey);
-    }
+
+    console.log('=== EmailJS Environment Check ===');
+    console.log('Service ID exists:', !!serviceId);
+    console.log('Template ID exists:', !!templateId);
+    console.log('Public Key exists:', !!publicKey);
+    console.log('==============================');
   }, []);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const onSubmit = async (data: FormData) => {
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submission started');
     setIsSubmitting(true);
-    setFormStatus("idle");
-    setErrorMessage("");
+    setError(null);
 
-    try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error("Email service configuration is missing");
-      }
-
-      const templateParams = {
-        from_name: data.name,
-        from_email: data.email,
-        subject: data.subject,
-        message: data.message,
-      };
-
-      const result = await emailjs.send(serviceId, templateId, templateParams);
-
-      console.log("EmailJS response:", result);
-
-      if (result.status !== 200) {
-        throw new Error(
-          `EmailJS returned status ${result.status}: ${result.text}`
-        );
-      }
-
-      setFormStatus("success");
-      reset();
-
-      if (onSuccess) {
-        onSuccess();
-      }
-
-      setTimeout(() => {
-        setFormStatus("idle");
-      }, 5000);
-    } catch (error) {
-      console.error("Form submission error:", error);
-      setFormStatus("error");
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "Failed to send email. Please try again later."
-      );
-    } finally {
-      setIsSubmitting(false);
+    if (!form.current) {
+      console.error('Form reference is null');
+      return;
     }
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    // Log the actual values (first few characters) to verify they're correct
+    console.log('EmailJS Values:', {
+      serviceId: serviceId?.substring(0, 10) + '...',
+      templateId: templateId?.substring(0, 10) + '...',
+      publicKey: publicKey?.substring(0, 10) + '...'
+    });
+
+    // Log form data
+    const formData = new FormData(form.current);
+    const formDataObj = {
+      user_name: formData.get('user_name'),
+      user_email: formData.get('user_email'),
+      subject: formData.get('subject'),
+      message: formData.get('message')
+    };
+    console.log('Form Data being sent:', formDataObj);
+
+    console.log('Attempting to send email...');
+    emailjs
+      .sendForm(
+        serviceId,
+        templateId,
+        form.current,
+        publicKey
+      )
+      .then(
+        (result) => {
+          console.log('EmailJS Response:', result);
+          console.log('SUCCESS! Status:', result.status);
+          console.log('SUCCESS! Text:', result.text);
+          setSubmitted(true);
+          form.current?.reset();
+          setTimeout(() => setSubmitted(false), 3000);
+        },
+        (error) => {
+          console.error('EmailJS Error Details:', error);
+          console.error('Error Status:', error.status);
+          console.error('Error Text:', error.text);
+          setError(`Failed to send message: ${error.text || 'Unknown error'}`);
+        }
+      )
+      .finally(() => {
+        console.log('EmailJS request completed');
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -96,149 +88,60 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       <h3 className="text-2xl font-bold text-dark-800 dark:text-white mb-6">
         Send Me a Message
       </h3>
-
-      {formStatus === "success" ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-green-600 dark:text-green-500"
-        >
+      {submitted ? (
+        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-green-600 dark:text-green-500">
           <p className="font-medium">Thank you for your message!</p>
-          <p className="text-sm mt-1">
-            I'll get back to you as soon as possible.
-          </p>
-        </motion.div>
-      ) : formStatus === "error" ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-600 dark:text-red-500"
-        >
-          <div className="flex items-start">
-            <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium">Error sending your message</p>
-              <p className="text-sm mt-1">
-                {errorMessage ||
-                  "Please try again later or contact me directly via email."}
-              </p>
-            </div>
-          </div>
-        </motion.div>
+          <p className="text-sm mt-1">I'll get back to you as soon as possible.</p>
+        </div>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form ref={form} onSubmit={sendEmail} className="space-y-5">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-600 dark:text-red-500">
+              <p className="font-medium">{error}</p>
+            </div>
+          )}
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1"
-            >
-              Your Name
-            </label>
+            <label htmlFor="user_name" className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Your Name</label>
             <input
-              type="text"
-              id="name"
-              className={`w-full p-3 rounded-md border ${
-                errors.name
-                  ? "border-red-500 dark:border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition`}
-              {...register("name", {
-                required: "Name is required",
-              })}
+              id="user_name"
+              name="user_name"
+              required
+              className="w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition"
             />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-500">
-                {errors.name.message}
-              </p>
-            )}
           </div>
-
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1"
-            >
-              Email Address
-            </label>
+            <label htmlFor="user_email" className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Email Address</label>
             <input
               type="email"
-              id="email"
-              className={`w-full p-3 rounded-md border ${
-                errors.email
-                  ? "border-red-500 dark:border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition`}
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
+              id="user_email"
+              name="user_email"
+              required
+              className="w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-500">
-                {errors.email.message}
-              </p>
-            )}
           </div>
-
           <div>
-            <label
-              htmlFor="subject"
-              className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1"
-            >
-              Subject
-            </label>
+            <label htmlFor="subject" className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Subject</label>
             <input
               type="text"
               id="subject"
-              className={`w-full p-3 rounded-md border ${
-                errors.subject
-                  ? "border-red-500 dark:border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition`}
-              {...register("subject", {
-                required: "Subject is required",
-              })}
+              name="subject"
+              required
+              className="w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition"
             />
-            {errors.subject && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-500">
-                {errors.subject.message}
-              </p>
-            )}
           </div>
-
           <div>
-            <label
-              htmlFor="message"
-              className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1"
-            >
-              Message
-            </label>
+            <label htmlFor="message" className="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Message</label>
             <textarea
               id="message"
-              rows={4}
-              className={`w-full p-3 rounded-md border ${
-                errors.message
-                  ? "border-red-500 dark:border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition resize-none`}
-              {...register("message", {
-                required: "Message is required",
-              })}
+              name="message"
+              required
+              className="w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-800 text-dark-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 outline-none transition resize-none"
             ></textarea>
-            {errors.message && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-500">
-                {errors.message.message}
-              </p>
-            )}
           </div>
-
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white py-3 px-6 rounded-md font-medium transition-colors flex items-center justify-center"
+            className="w-full bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white py-3 px-6 rounded-md font-medium transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -258,4 +161,4 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   );
 };
 
-export default ContactForm;
+export default ContactForm; 
