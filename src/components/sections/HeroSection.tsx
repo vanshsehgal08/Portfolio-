@@ -145,8 +145,9 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <a 
-                href="https://drive.google.com/file/d/1C-qg51kEiC6aRgRXAX14glbRc_EUIQo4/view?usp=drive_link" 
-                download
+                href="https://drive.google.com/file/d/111zIRug27bMRcsoE2CwOkPyUVHi8PH0-/view?usp=sharing" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition duration-300 ease-out border-2 border-primary-600 rounded-full shadow-md text-xl"
               >
                 <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-primary-600 group-hover:translate-x-0 ease">

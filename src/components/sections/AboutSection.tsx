@@ -72,8 +72,9 @@ const AboutSection: React.FC = () => {
           
           <div className="pt-4">
             <a 
-              href="https://drive.google.com/file/d/1C-qg51kEiC6aRgRXAX14glbRc_EUIQo4/view?usp=drive_link" 
-              download
+              href="https://drive.google.com/file/d/111zIRug27bMRcsoE2CwOkPyUVHi8PH0-/view?usp=sharing" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors duration-300"
             >
               <Download size={18} className="mr-2" />
