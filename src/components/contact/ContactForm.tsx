@@ -20,14 +20,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
 
-    useEffect(() => {
-        // Initialize EmailJS with your public key
-        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-        if (publicKey) {
-            emailjs.init(publicKey);
-        }
-    }, []);
-
     const {
         register,
         handleSubmit,
@@ -43,21 +35,33 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         try {
             const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
             const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+            const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-            if (!serviceId || !templateId) {
+            if (!serviceId || !templateId || !publicKey) {
                 throw new Error("Email service configuration is missing");
             }
 
-            await emailjs.send(
+            
+            const templateParams = {
+                from_name: data.name,
+                from_email: data.email,
+                subject: data.subject,
+                message: data.message
+            };
+              
+
+            const result = await emailjs.send(
                 serviceId,
                 templateId,
-                {
-                    from_name: data.name,
-                    from_email: data.email,
-                    subject: data.subject,
-                    message: data.message,
-                }
+                templateParams,
+                publicKey
             );
+
+            console.log('EmailJS response:', result);
+
+            if (result.status !== 200) {
+                throw new Error(`EmailJS returned status ${result.status}: ${result.text}`);
+            }
 
             setFormStatus("success");
             reset();

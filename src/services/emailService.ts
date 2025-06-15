@@ -35,12 +35,14 @@ export const sendEmail = async (params: EmailParams): Promise<void> => {
     throw new Error('EmailJS configuration is missing. Please check your environment variables.');
   }
 
+
   const templateParams = {
     from_name: params.name,
     from_email: params.email,
     subject: params.subject,
     message: params.message
   };
+  
 
   try {
     await emailjs.send(
