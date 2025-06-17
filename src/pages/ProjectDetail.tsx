@@ -1,18 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Github, ExternalLink, LucideIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Github, ExternalLink, LucideIcon, X } from 'lucide-react';
 import { projects } from '../data/projects';
 
 const ProjectDetail: React.FC = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
   
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const project = projects.find(p => p.id === Number(projectId));
+
+  const handleGitHubClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    // Special handling for NeuraLens project
+    if (project?.id === 5) {
+      setShowPopup(true);
+      return;
+    }
+    
+    // For other projects, open the GitHub link normally
+    if (project?.githubLink && project.githubLink !== "#") {
+      window.open(project.githubLink, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   if (!project) {
     return (
@@ -78,15 +94,13 @@ const ProjectDetail: React.FC = () => {
 
               <div className="flex gap-4">
                 {project.githubLink && (
-                  <a 
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button 
+                    onClick={handleGitHubClick}
                     className="inline-flex items-center px-6 py-3 rounded-lg bg-dark-800 dark:bg-dark-700 text-white hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors"
                   >
                     <Github size={20} className="mr-2" />
                     View Code
-                  </a>
+                  </button>
                 )}
                 {project.demoLink && (
                   <a 
@@ -128,6 +142,64 @@ const ProjectDetail: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* NeuraLens Project In Progress Popup */}
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPopup(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white dark:bg-dark-700 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-dark-800 dark:text-white">
+                  🚧 Project In Progress
+                </h3>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="text-dark-400 hover:text-dark-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
+                    <Github size={24} className="text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-dark-800 dark:text-white">NeuraLens</h4>
+                    <p className="text-sm text-dark-600 dark:text-gray-400">AI-Powered Smart Glasses</p>
+                  </div>
+                </div>
+                <p className="text-dark-600 dark:text-gray-300 text-sm leading-relaxed">
+                  This project is currently in active development. The GitHub repository will be made public soon with full documentation and setup instructions.
+                </p>
+                <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-lg p-3">
+                  <p className="text-xs text-primary-700 dark:text-primary-300 font-medium">
+                    💡 Stay tuned for updates! The repository will include comprehensive documentation, setup guides, and demo videos.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-2 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-secondary-700 transition-all duration-200"
+                >
+                  Got it!
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

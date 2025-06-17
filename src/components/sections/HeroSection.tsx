@@ -12,9 +12,10 @@ const HeroSection: React.FC = () => {
   const typingRef = useRef<HTMLSpanElement>(null);
   const roles = [
     'Full Stack Developer',
-    'Competitive Programmer',
+    'Software Developer',
     'AI Enthusiast',
-    'Problem Solver'
+    'Problem Solver',
+    'Competitive Programmer'
   ];
 
   useEffect(() => {

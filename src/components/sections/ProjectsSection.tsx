@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, ExternalLink, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Github, ExternalLink, ChevronLeft, ChevronRight, ArrowRight, X } from 'lucide-react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import SectionHeading from '../ui/SectionHeading';
 import { projects } from '../../data/projects';
@@ -8,6 +8,7 @@ import { projects } from '../../data/projects';
 const ProjectsSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
   const projectsPerPage = 3;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
   const navigate = useNavigate();
@@ -32,6 +33,21 @@ const ProjectsSection: React.FC = () => {
 
   const handleProjectClick = (projectId: number) => {
     navigate(`/projects/${projectId}`);
+  };
+
+  const handleGitHubClick = (e: React.MouseEvent, project: any) => {
+    e.stopPropagation();
+    
+    // Special handling for NeuraLens project
+    if (project.id === 5) {
+      setShowPopup(true);
+      return;
+    }
+    
+    // For other projects, open the GitHub link normally
+    if (project.githubLink && project.githubLink !== "#") {
+      window.open(project.githubLink, '_blank', 'noopener,noreferrer');
+    }
   };
 
   // If on /projects, show all projects in a grid, no slider
@@ -80,17 +96,14 @@ const ProjectsSection: React.FC = () => {
                 >
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
                     {project.githubLink && (
-                      <motion.a 
-                        href={project.githubLink} 
-                        target="_blank"
-                        rel="noopener noreferrer" 
+                      <motion.button 
+                        onClick={(e) => handleGitHubClick(e, project)}
                         className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={(e) => e.stopPropagation()}
                       >
                         <Github size={18} />
-                      </motion.a>
+                      </motion.button>
                     )}
                     {project.demoLink && (
                       <motion.a 
@@ -112,7 +125,7 @@ const ProjectsSection: React.FC = () => {
                 <h3 className="text-2xl font-bold text-dark-800 dark:text-white mb-2 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
                   {project.title}
                 </h3>
-                <p className="text-dark-600 dark:text-gray-300 mb-3 line-clamp-3">
+                <p className="text-dark-600 dark:text-gray-300 mb-3 line-clamp-6">
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3">
@@ -177,17 +190,14 @@ const ProjectsSection: React.FC = () => {
                       >
                         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
                           {project.githubLink && (
-                            <motion.a 
-                              href={project.githubLink} 
-                              target="_blank"
-                              rel="noopener noreferrer" 
+                            <motion.button 
+                              onClick={(e) => handleGitHubClick(e, project)}
                               className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-primary-600 transition-colors"
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
-                              onClick={(e) => e.stopPropagation()}
                             >
                               <Github size={18} />
-                            </motion.a>
+                            </motion.button>
                           )}
                           {project.demoLink && (
                             <motion.a 
@@ -209,7 +219,7 @@ const ProjectsSection: React.FC = () => {
                       <h3 className="text-2xl font-bold text-dark-800 dark:text-white mb-2 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
                         {project.title}
                       </h3>
-                      <p className="text-dark-600 dark:text-gray-300 mb-3 line-clamp-3">
+                      <p className="text-dark-600 dark:text-gray-300 mb-3 line-clamp-6">
                         {project.description}
                       </p>
                       <div className="flex flex-wrap gap-2 mt-3">
@@ -285,6 +295,64 @@ const ProjectsSection: React.FC = () => {
           </div>
         </>
       )}
+
+      {/* NeuraLens Project In Progress Popup */}
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPopup(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white dark:bg-dark-700 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-dark-800 dark:text-white">
+                  🚧 Project In Progress
+                </h3>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="text-dark-400 hover:text-dark-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
+                    <Github size={24} className="text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-dark-800 dark:text-white">NeuraLens</h4>
+                    <p className="text-sm text-dark-600 dark:text-gray-400">AI-Powered Smart Glasses</p>
+                  </div>
+                </div>
+                <p className="text-dark-600 dark:text-gray-300 text-sm leading-relaxed">
+                  This project is currently in active development. The GitHub repository will be made public soon with full documentation and setup instructions.
+                </p>
+                <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-lg p-3">
+                  <p className="text-xs text-primary-700 dark:text-primary-300 font-medium">
+                    💡 Stay tuned for updates! The repository will include comprehensive documentation, setup guides, and demo videos.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-2 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-secondary-700 transition-all duration-200"
+                >
+                  Got it!
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

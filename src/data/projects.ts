@@ -92,10 +92,10 @@ export const projects: Project[] = [
   {
     id: 5,
     title: "NeuraLens",
-    description: "NeuraLens is a glass-based personal AI assistant built on Raspberry Pi and state-of-the-art low-latency multimodal LLMs. Originally a 3-day hackathon project, it has been continuously developed to demonstrate the capabilities of advanced AI in real-world applications. The assistant can perceive the world, engage in natural conversations, and facilitate actions on your computer, including code generation by analyzing your screen or image creation from real-world objects. The current implementation leverages Google Gemini 1.5 Flash, Speech2Text/Text2Speech, and ImageGen2 models via Google Cloud Vertex AI, designed for easy replication with other models.",
-    image: "/NeuraLens.png",
-    tags: ["Raspberry Pi", "Google Gemini", "Electron", "Vertex AI"],
-    githubLink: "https://github.com",
+    description: "NeuraLens is a glass-based personal AI assistant built on Raspberry Pi and state-of-the-art low-latency multimodal LLMs. Originally a 3-day hackathon project, it has been continuously developed to demonstrate the capabilities of advanced AI in real-world applications. The assistant can perceive the world, engage in natural conversations, and facilitate actions on your computer, including code generation by analyzing your screen or image creation from real-world objects. The current implementation leverages Google Gemini 1.5 Flash, Speech2Text/Text2Speech, and ImageGen2 models via Google Cloud Vertex AI, designed for easy replication with other models. ⚠️ This project is currently in active development and the repository will be made public soon.",
+    image: "/Neuralens.png",
+    tags: ["Raspberry Pi", "Google Gemini", "Electron", "Vertex AI", "In Progress"],
+    githubLink: "#",
     featured: true,
     techStack: [
       { name: "Raspberry Pi", icon: Cpu },
@@ -108,22 +108,13 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 9,
-    title: "GreenQuest",
-    description: "GreenQuest is an environmental awareness platform that combines an AI-powered chatbot, personalized video learning, carbon footprint tracking via the CO₂ Blueprint Extension, adaptive quizzes, and a curated news feed. It promotes sustainability through interactive and educational tools.",
-    image: "/greenquest.png",
-    tags: ["AI Chatbot", "Personalized Learning", "Carbon Footprint", "Quizzes", "User Accounts"],
-    githubLink: "https://github.com/vanshsehgal08/GreenQuest",
-    demoLink: "https://green-quest-zeta.vercel.app/",
-    featured: false,
-    techStack: [
-      { name: "React", icon: Code },
-      { name: "Node.js", icon: Server },
-      { name: "Gemini", icon: Cpu },
-      { name: "GCP", icon: Cloud },
-      { name: "MongoDB", icon: Database },
-      { name: "StarUML", icon: LayoutDashboard },
-    ],
+    id: 6,
+    title: "Brain Tumor Detection",
+    description: "Medical imaging project using Python and machine learning to detect brain tumors accurately, assisting early diagnosis and treatment planning.",
+    image: "/tumor.png",
+    tags: ["Python", "Machine Learning", "Medical Imaging", "AI"],
+    githubLink: "https://github.com/vanshsehgal08/Brain-tumor",
+    featured: false
   },
   {
     id: 7,
@@ -161,12 +152,22 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 6,
-    title: "Brain Tumor Detection",
-    description: "Medical imaging project using Python and machine learning to detect brain tumors accurately, assisting early diagnosis and treatment planning.",
-    image: "/tumor.png",
-    tags: ["Python", "Machine Learning", "Medical Imaging", "AI"],
-    githubLink: "https://github.com/vanshsehgal08/Brain-tumor",
-    featured: false
+    id: 9,
+    title: "GreenQuest",
+    description: "GreenQuest is an environmental awareness platform that combines an AI-powered chatbot, personalized video learning, carbon footprint tracking via the CO₂ Blueprint Extension, adaptive quizzes, and a curated news feed. It promotes sustainability through interactive and educational tools.",
+    image: "/greenquest.png",
+    tags: ["AI Chatbot", "Personalized Learning", "Carbon Footprint", "Quizzes", "User Accounts"],
+    githubLink: "https://github.com/vanshsehgal08/GreenQuest",
+    demoLink: "https://green-quest-zeta.vercel.app/",
+    featured: false,
+    techStack: [
+      { name: "React", icon: Code },
+      { name: "Node.js", icon: Server },
+      { name: "Gemini", icon: Cpu },
+      { name: "GCP", icon: Cloud },
+      { name: "MongoDB", icon: Database },
+      { name: "StarUML", icon: LayoutDashboard },
+    ],
   }
+  
 ];
