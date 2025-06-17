@@ -11,6 +11,7 @@ import Experience from './pages/Experience';
 import Contact from './pages/Contact';
 import { BackToTop } from './components/ui/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function App() {
       </main>
       <BackToTop />
       <Footer />
+      <Analytics />
     </div>
   );
 }
