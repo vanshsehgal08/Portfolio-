@@ -9,7 +9,7 @@ const AboutSection: React.FC = () => {
       degree: 'B.Tech in Computer Science',
       institute: 'Vellore Institute of Technology, Vellore',
       year: '2022-26',
-      score: '9.05/10 CGPA'
+      score: '9.06/10 CGPA'
     },
     {
       degree: '12th C.B.S.E',
