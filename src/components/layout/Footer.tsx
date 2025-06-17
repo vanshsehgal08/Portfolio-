@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Heart, Code, Github, Linkedin, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -28,21 +29,21 @@ const Footer: React.FC = () => {
               Quick Links
             </h4>
             <nav className="flex flex-col space-y-2">
-              <a href="#home" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
+              <Link to="/" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
                 Home
-              </a>
-              <a href="#about" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
+              </Link>
+              <Link to="/about" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
                 About
-              </a>
-              <a href="#projects" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
+              </Link>
+              <Link to="/projects" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
                 Projects
-              </a>
-              <a href="#experience" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
+              </Link>
+              <Link to="/experience" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
                 Experience
-              </a>
-              <a href="#contact" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
+              </Link>
+              <Link to="/contact" className="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm">
                 Contact
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -53,7 +54,7 @@ const Footer: React.FC = () => {
             </h4>
             <div className="flex flex-col space-y-2">
               <a 
-                href="vanshsehgal2019@gmail.com" 
+                href="mailto:vanshsehgal2019@gmail.com" 
                 className="flex items-center space-x-2 text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-sm"
               >
                 <Mail size={16} />
