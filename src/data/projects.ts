@@ -49,6 +49,7 @@ export const projects: Project[] = [
     image: "/LT-Companion.jpg",
     tags: ["Chrome Extension", "Google Gemini", "JavaScript", "AI Integration"],
     githubLink: "https://github.com/vanshsehgal08/LT-Companion",
+    demoLink: "https://chromewebstore.google.com/detail/coddcdjenijbdjbkjahaldfeadllkcdp?utm_source=item-share-cb",
     featured: true,
     techStack: [
       { name: "Chrome Extension", icon: Puzzle },
