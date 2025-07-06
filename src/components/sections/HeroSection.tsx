@@ -96,11 +96,11 @@ const HeroSection: React.FC = () => {
         ))}
       </div>
 
-      <div className="container-custom relative z-20 mt-16">
-        <div className="flex flex-col md:flex-row items-center gap-12">
+      <div className="container-custom relative z-20 py-4 md:py-10">
+        <div className="flex flex-col md:flex-row items-center gap-12 min-h-screen justify-center">
           <motion.div 
             ref={textRef}
-            className="flex-1 text-center md:text-left"
+            className="flex-1 flex flex-col items-center justify-center text-center md:text-left"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -177,7 +177,7 @@ const HeroSection: React.FC = () => {
           </motion.div>
 
           <motion.div 
-            className="flex-1 flex justify-center md:justify-end"
+            className="hidden md:flex flex-1 justify-center md:justify-end"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
