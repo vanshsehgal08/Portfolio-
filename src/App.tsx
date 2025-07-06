@@ -14,23 +14,11 @@ import ScrollToTop from './components/ScrollToTop';
 import { Analytics } from '@vercel/analytics/react';
 import MobileNavBar from './components/layout/MobileNavBar';
 
-// Scroll to top and clean hash on mount
-function ScrollToTopOnMount() {
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-    if (window.location.hash) {
-      history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
-  }, []);
-  return null;
-}
-
 function App() {
   const location = useLocation();
 
   return (
     <div className="flex flex-col min-h-screen">
-      <ScrollToTopOnMount />
       <Navbar />
       <ScrollToTop />
       <main className="flex-grow">
