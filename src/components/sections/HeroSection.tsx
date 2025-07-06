@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Download, ArrowRight, Code, Terminal, Brain } from 'lucide-react';
+import { Download, ArrowRight, Code, Terminal, Brain, ChevronDown } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const [textRef, inView] = useInView({
@@ -96,8 +96,8 @@ const HeroSection: React.FC = () => {
         ))}
       </div>
 
-      <div className="container-custom relative z-20 py-4 md:py-10">
-        <div className="flex flex-col md:flex-row items-center gap-12 min-h-screen justify-center">
+      <div className="container-custom relative z-20 pt-0 md:py-10">
+        <div className="flex flex-col md:flex-row gap-12 pt-1242 md:items-center md:justify-center">
           <motion.div 
             ref={textRef}
             className="flex-1 flex flex-col items-center justify-center text-center md:text-left"
