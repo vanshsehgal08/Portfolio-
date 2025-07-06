@@ -17,7 +17,7 @@ const MobileNavBar: React.FC = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden flex items-center justify-center pb-2" style={{height: '64px', paddingBottom: 'env(safe-area-inset-bottom)'}}>
-      <div className="w-full max-w-md mx-2 flex items-center gap-2 px-4 py-2 rounded-full shadow-lg backdrop-blur-md bg-white/80 dark:bg-dark-800/80 border border-gray-200 dark:border-dark-700">
+      <div className="max-w-md mx-2 flex items-center justify-center gap-2 px-4 py-2 rounded-full shadow-lg backdrop-blur-md bg-white/80 dark:bg-dark-800/80 border border-gray-200 dark:border-dark-700">
         {navItems.map(({ href, icon: Icon, label }) => (
           <a
             key={label}
