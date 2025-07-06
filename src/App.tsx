@@ -12,6 +12,7 @@ import Contact from './pages/Contact';
 import { BackToTop } from './components/ui/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import { Analytics } from '@vercel/analytics/react';
+import MobileNavBar from './components/layout/MobileNavBar';
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function App() {
         </AnimatePresence>
       </main>
       <BackToTop />
+      <MobileNavBar />
       <Footer />
       <Analytics />
     </div>
