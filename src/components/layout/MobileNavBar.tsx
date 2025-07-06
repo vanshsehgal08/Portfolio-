@@ -6,8 +6,8 @@ const navItems = [
   { href: '#home', icon: Home, label: 'Home' },
   { href: '#about', icon: User, label: 'About' },
   { href: '#skills', icon: Star, label: 'Skills' },
-  { href: '#experience', icon: Briefcase, label: 'Experience' },
   { href: '#projects', icon: Folder, label: 'Projects' },
+  { href: '#experience', icon: Briefcase, label: 'Experience' },
   { href: '#achievements', icon: Award, label: 'Achievements' },
   { href: '#contact', icon: Mail, label: 'Contact' },
 ];
