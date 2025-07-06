@@ -16,8 +16,8 @@ const MobileNavBar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-2" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
-      <div className="mx-auto max-w-xs flex items-center gap-2 px-4 py-2 rounded-full shadow-lg backdrop-blur-md bg-white/80 dark:bg-dark-800/80 border border-gray-200 dark:border-dark-700">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden flex items-center justify-center" style={{height: '64px', paddingBottom: 'env(safe-area-inset-bottom)'}}>
+      <div className="max-w-xs flex items-center gap-2 px-4 py-2 rounded-full shadow-lg backdrop-blur-md bg-white/80 dark:bg-dark-800/80 border border-gray-200 dark:border-dark-700">
         {navItems.map(({ href, icon: Icon, label }) => (
           <a
             key={label}
