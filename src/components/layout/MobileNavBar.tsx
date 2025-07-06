@@ -1,15 +1,13 @@
 import React from 'react';
-import { Home, User, Folder, Star, Briefcase, Award, Mail, Sun, Moon } from 'lucide-react';
+import { Home, User, Folder, Briefcase, Mail, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Link } from 'react-router-dom';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/about', icon: User, label: 'About' },
-  { to: '/skills', icon: Star, label: 'Skills' },
   { to: '/projects', icon: Folder, label: 'Projects' },
   { to: '/experience', icon: Briefcase, label: 'Experience' },
-  { to: '/achievements', icon: Award, label: 'Achievements' },
   { to: '/contact', icon: Mail, label: 'Contact' },
 ];
 

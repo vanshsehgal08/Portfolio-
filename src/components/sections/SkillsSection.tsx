@@ -24,14 +24,14 @@ const SkillsSection: React.FC = () => {
   };
 
   return (
-    <div className="container-custom py-20">
+    <div className="container-custom py-4 md:py-12">
       <SectionHeading 
         title="Skills & Expertise" 
         subtitle="A comprehensive overview of my technical skills and tools"
       />
       
       <motion.div 
-        className="flex flex-wrap justify-center gap-3 mb-12"
+        className="flex flex-wrap justify-center gap-3 mb-6"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -59,7 +59,7 @@ const SkillsSection: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div 
             ref={scrollContainerRef}
-            className="flex overflow-x-hidden scroll-smooth gap-6 pb-4 px-4"
+            className="flex overflow-x-auto scroll-smooth gap-6 pb-4 px-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
