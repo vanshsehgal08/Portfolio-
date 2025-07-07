@@ -134,9 +134,7 @@ const HeroSection: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              Computer Science student passionate about building full-stack web applications 
-              and solving complex problems. Experienced with React, Node.js, and AI-powered projects 
-              using Raspberry Pi and Google Gemini.
+              A Computer Science student with a passion for developing full-scale applications and AI-driven solutions. I enjoy solving complex problems through clean code and thoughtful design. With a strong foundation in algorithms and a detail-oriented mindset, I'm always eager to learn, collaborate, and make a real-world impact.
             </motion.p>
 
             <motion.div 

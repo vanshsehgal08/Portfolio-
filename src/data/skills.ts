@@ -1,28 +1,26 @@
-import { 
-  Code, Terminal, Binary, FileJson, PenTool, 
-  Layout, Workflow, PaintBucket, Palette, 
-  Server, Database, Cable, 
-  HardDrive, TableProperties, Layers, CloudCog, Flame, 
-  Github, GitBranch, MonitorSmartphone, Send, Figma, Trello, Cloud,
-  Cpu, Network, FolderTree, Lock, LineChart, Box, Settings, 
-  Brain, Users, Puzzle, Trophy, MessageSquare, Timer, Lightbulb
+import {
+  Layout, Workflow, PaintBucket, Palette, Server, Database, Cable, HardDrive, TableProperties, Layers, CloudCog, Flame, Github, GitBranch, MonitorSmartphone, Send, Figma, Trello, Cpu, Network, FolderTree, Lock, LineChart, Box, Settings, Brain, Users, Puzzle, Trophy, MessageSquare, Timer, Lightbulb
 } from 'lucide-react';
+import { FaJava } from 'react-icons/fa';
+import { SiAwsamplify } from 'react-icons/si';
+
+import { SiC, SiCplusplus, SiJavascript, SiPython, SiTypescript } from 'react-icons/si';
 
 export interface Skill {
   name: string;
   level: number; // 1-5
   category: 'programming' | 'backend' | 'frontend' | 'database' | 'tools' | 'core_cs' | 'soft_skills';
-  icon: any;
+  icon: React.ElementType;
 }
 
 export const skills: Skill[] = [
   // Programming Languages
-  { name: "Java", level: 5, category: "programming", icon: Code },
-  { name: "Python", level: 5, category: "programming", icon: Terminal },
-  { name: "C", level: 4, category: "programming", icon: Binary },
-  { name: "C++", level: 4, category: "programming", icon: Binary },
-  { name: "JavaScript", level: 5, category: "programming", icon: FileJson },
-  { name: "TypeScript", level: 4, category: "programming", icon: FileJson },
+  { name: "Java", level: 5, category: "programming", icon: FaJava },
+  { name: "Python", level: 5, category: "programming", icon: SiPython },
+  { name: "C", level: 4, category: "programming", icon: SiC },
+  { name: "C++", level: 4, category: "programming", icon: SiCplusplus },
+  { name: "JavaScript", level: 5, category: "programming", icon: SiJavascript },
+  { name: "TypeScript", level: 4, category: "programming", icon: SiTypescript },
   
   // Frontend
   { name: "React.js", level: 5, category: "frontend", icon: Layout },
@@ -51,7 +49,7 @@ export const skills: Skill[] = [
   { name: "Postman", level: 4, category: "tools", icon: Send },
   { name: "Figma", level: 4, category: "tools", icon: Figma },
   { name: "Jira", level: 3, category: "tools", icon: Trello },
-  { name: "AWS", level: 3, category: "tools", icon: Cloud },
+  { name: "AWS", level: 3, category: "tools", icon: SiAwsamplify },
 
   // Core CS Subjects
   { name: "DSA", level: 5, category: "core_cs", icon: FolderTree },
@@ -59,7 +57,7 @@ export const skills: Skill[] = [
   { name: "CN", level: 4, category: "core_cs", icon: Network },
   { name: "OOPs", level: 5, category: "core_cs", icon: Box },
   { name: "DBMS", level: 4, category: "core_cs", icon: Database },
-  { name: "Linux Environment", level: 4, category: "core_cs", icon: Terminal },
+  { name: "Linux Environment", level: 4, category: "core_cs", icon: SiC },
   { name: "Computer Architecture", level: 3, category: "core_cs", icon: Cpu },
   { name: "Software Engineering", level: 4, category: "core_cs", icon: LineChart },
 
