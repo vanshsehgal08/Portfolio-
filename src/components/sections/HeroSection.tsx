@@ -97,7 +97,7 @@ const HeroSection: React.FC = () => {
       </div>
 
       <div className="container-custom relative z-20 pt-0 md:py-10">
-        <div className="flex flex-col md:flex-row gap-12 pt-17942 md:items-center md:justify-center">
+        <div className="flex flex-col md:flex-row gap-12 pt-0 md:items-center md:justify-center">
           <motion.div 
             ref={textRef}
             className="flex-1 flex flex-col items-center justify-center text-center md:text-left"
