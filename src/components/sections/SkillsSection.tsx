@@ -25,25 +25,36 @@ const SkillsSection: React.FC = () => {
     }
   };
 
-  // Continuous auto-scroll logic
+  // Duplicate the filteredSkills for infinite scroll
+  const infiniteSkills = [...filteredSkills, ...filteredSkills];
+
+  // Smooth infinite auto-scroll logic
   useEffect(() => {
     let animationFrameId: number;
     const container = scrollContainerRef.current;
     if (!container || isHovered) return;
-    const speed = 5; // px per frame, increased for much faster scroll
+    const speed = 2; // px per frame, slower for smoothness
+    const singleListWidth = container.scrollWidth / 2;
     const scrollStep = () => {
       if (!container) return;
-      const maxScrollLeft = container.scrollWidth - container.clientWidth;
-      if (container.scrollLeft + 1 >= maxScrollLeft) {
-        container.scrollTo({ left: 0 });
-      } else {
-        container.scrollLeft += speed;
+      // If we've scrolled past the first list, reset to the start of the first list
+      if (container.scrollLeft >= singleListWidth) {
+        container.scrollLeft = container.scrollLeft - singleListWidth;
       }
+      container.scrollLeft += speed;
       animationFrameId = requestAnimationFrame(scrollStep);
     };
     animationFrameId = requestAnimationFrame(scrollStep);
     return () => cancelAnimationFrame(animationFrameId);
   }, [filteredSkills, isHovered]);
+
+  // Reset scroll position when filteredSkills changes (category changes)
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.scrollLeft = 0;
+    }
+  }, [filteredSkills]);
 
   return (
     <div className="container-custom py-4 md:py-12">
@@ -88,13 +99,13 @@ const SkillsSection: React.FC = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {filteredSkills.map((skill, index) => {
+            {infiniteSkills.map((skill, index) => {
               const IconComponent = skill.icon;
               const isHovered = hoveredSkill === skill.name;
               
               return (
                 <motion.div
-                  key={skill.name}
+                  key={skill.name + '-' + index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
