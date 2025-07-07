@@ -66,7 +66,7 @@ const HeroSection: React.FC = () => {
   ];
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50/50 via-white to-secondary-50/50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-700">
+    <div className="relative min-h-screen flex md:items-center md:justify-center pt-20 md:pt-0 overflow-hidden bg-gradient-to-br from-primary-50/50 via-white to-secondary-50/50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-700">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {floatingIcons.map(({ Icon, delay, x, y }, index) => (
