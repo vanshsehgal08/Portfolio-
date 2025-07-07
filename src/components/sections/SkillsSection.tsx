@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import SectionHeading from '../ui/SectionHeading';
@@ -7,6 +7,7 @@ import { skills, categories } from '../../data/skills';
 const SkillsSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const filteredSkills = activeCategory === 'all' 
@@ -15,13 +16,34 @@ const SkillsSection: React.FC = () => {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      scrollContainerRef.current.scrollBy({
+      const container = scrollContainerRef.current;
+      const scrollAmount = direction === 'left' ? -container.clientWidth : container.clientWidth;
+      container.scrollBy({
         left: scrollAmount,
         behavior: 'smooth'
       });
     }
   };
+
+  // Continuous auto-scroll logic
+  useEffect(() => {
+    let animationFrameId: number;
+    const container = scrollContainerRef.current;
+    if (!container || isHovered) return;
+    const speed = 5; // px per frame, increased for much faster scroll
+    const scrollStep = () => {
+      if (!container) return;
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      if (container.scrollLeft + 1 >= maxScrollLeft) {
+        container.scrollTo({ left: 0 });
+      } else {
+        container.scrollLeft += speed;
+      }
+      animationFrameId = requestAnimationFrame(scrollStep);
+    };
+    animationFrameId = requestAnimationFrame(scrollStep);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [filteredSkills, isHovered]);
 
   return (
     <div className="container-custom py-4 md:py-12">
@@ -59,10 +81,12 @@ const SkillsSection: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div 
             ref={scrollContainerRef}
-            className="flex overflow-x-auto scroll-smooth gap-6 pb-4 px-2"
+            className="flex overflow-x-auto scroll-smooth gap-6 pb-4 px-2 scrollbar-none hide-scrollbar"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             {filteredSkills.map((skill, index) => {
               const IconComponent = skill.icon;
@@ -127,19 +151,7 @@ const SkillsSection: React.FC = () => {
             })}
           </motion.div>
         </AnimatePresence>
-        
-        <button
-          onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg text-dark-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300"
-        >
-          <ChevronLeft size={24} />
-        </button>
-        <button
-          onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 p-3 rounded-full bg-white dark:bg-dark-700 shadow-lg text-dark-600 dark:text-gray-300 hover:bg-gradient-to-r hover:from-primary-600 hover:to-secondary-600 hover:text-white transition-all duration-300"
-        >
-          <ChevronRight size={24} />
-        </button>
+        {/* Arrow buttons removed */}
       </div>
     </div>
   );

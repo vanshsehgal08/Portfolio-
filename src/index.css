@@ -14,6 +14,12 @@
     @apply font-serif text-dark-800 dark:text-gray-100;
     max-width: 100vw;
     overflow-x: hidden;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    /* fallback for dark mode */
+  }
+  
+  .dark body {
+    background: #18181b;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -88,6 +94,27 @@
 
   .input-field {
     @apply w-full px-4 py-3 bg-gray-50 dark:bg-dark-600 border border-gray-300 dark:border-dark-500 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-secondary-400 dark:focus:border-secondary-400 outline-none transition;
+  }
+
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+  .dark .glassmorphism {
+    background: rgba(36, 68, 143, 0.22); /* bluish glass */
+    border: 1px solid rgba(120, 180, 255, 0.22);
+    box-shadow: 0 4px 30px rgba(36, 68, 143, 0.18);
+  }
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 }
 
