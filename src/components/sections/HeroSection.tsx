@@ -144,8 +144,8 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <a 
-                // href="https://drive.google.com/file/d/111zIRug27bMRcsoE2CwOkPyUVHi8PH0-/view?usp=sharing" 
-                href="#"
+                href="https://drive.google.com/file/d/1AJZBmCbLawPgxhKxADrcinF75XEiCDHj/view?usp=drive_link" 
+                // href="#"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition duration-300 ease-out border-2 border-primary-600 rounded-full shadow-md text-xl"
